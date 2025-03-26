@@ -159,3 +159,108 @@ function showItem(itemId, categoryName) {
         console.warn(`Item not found: ${itemId} in category ${categoryName}`);
     }
 }
+
+function applyReversePreset() {
+    // Hide all clothing items first
+    hideSpecificCategories([
+        "top1", "top2", "pants1", "pants2", "skirt1", "skirt2", 
+        "shoes1", "shoes2", "jacket1", "jacket2", "dress1", "dress2", 
+        "sweatshirt1", "sweatshirt2", "hat1", "accessories", "socks1", "socks2", "leaf1", "leaf2"
+    ]);
+
+    // Show all uploaded items
+    showItem("pants2_4.png", "pants2");
+    showItem("pants1_3.png", "pants1");
+    showItem("top2_4.png", "top2");
+    showItem("shoes1_1.png", "shoes1");
+    showItem("shoes2_1.png", "shoes2");
+    showItem("top1_5.png", "top1");
+    showItem("jacket1_1.png", "jacket1");
+    showItem("socks1_1.png", "socks1");
+    showItem("socks2_1.png", "socks2");
+}
+
+function showItem(itemId, categoryName) {
+    const selectedItem = document.getElementById(itemId);
+    if (selectedItem) {
+        selectedItem.style.visibility = "visible";
+        selectedItem.style.display = "block";
+        selectedItem.style.position = "absolute";
+        selectedItem.style.left = "0";
+        selectedItem.style.top = "0";
+        selectedItem.style.zIndex = getZIndex(categoryName);
+    } else {
+        console.warn(`Item not found: ${itemId} in category ${categoryName}`);
+    }
+}
+
+function applyIntrovertPreset() {
+    // Hide all clothing items first
+    hideSpecificCategories([
+        "top1", "top2", "pants1", "pants2", "skirt1", "skirt2", 
+        "shoes1", "shoes2", "jacket1", "jacket2", "dress1", "dress2", 
+        "sweatshirt1", "sweatshirt2", "hat1", "accessories", "socks1", "socks2", "leaf1", "leaf2"
+    ]);
+
+    // Show all uploaded items for the introvert style
+    showItem("pants2_1.png", "pants2");
+    showItem("pants1_3.png", "pants1");
+    showItem("top2_1.png", "top2");
+    showItem("shoes1_1.png", "shoes1");
+    showItem("shoes2_1.png", "shoes2");
+    showItem("top1_5.png", "top1");
+    showItem("jacket1_1.png", "jacket1");
+    showItem("jacket2_1.png", "jacket2");
+    showItem("socks1_1.png", "socks1");
+    showItem("socks2_1.png", "socks2");
+}
+
+function showItem(itemId, categoryName) {
+    const selectedItem = document.getElementById(itemId);
+    if (selectedItem) {
+        selectedItem.style.visibility = "visible";
+        selectedItem.style.display = "block";
+        selectedItem.style.position = "absolute";
+        selectedItem.style.left = "0";
+        selectedItem.style.top = "0";
+        selectedItem.style.zIndex = getZIndex(categoryName);
+    } else {
+        console.warn(`Item not found: ${itemId} in category ${categoryName}`);
+    }
+}
+
+function applyTennisPreset() {
+    // Hide all clothing items first
+    hideSpecificCategories([
+        "top1", "top2", "pants1", "pants2", "skirt1", "skirt2", 
+        "shoes1", "shoes2", "jacket1", "jacket2", "dress1", "dress2", 
+        "sweatshirt1", "sweatshirt2", "hat1", "accessories", "socks1", "socks2", "leaf1", "leaf2"
+    ]);
+
+    // Show all uploaded items for the tennis style
+    showItem("top2_4.png", "top2");
+    showItem("top1_1.png", "top1");
+    showItem("shoes1_1.png", "shoes1");
+    showItem("hat1_1.png", "hat1");
+    showItem("pants2_4.png", "pants2");
+    showItem("skirt1_1.png", "skirt1");
+    showItem("shoes2_1.png", "shoes2");
+    showItem("socks1_1.png", "socks1");
+    showItem("socks2_1.png", "socks2");
+    showItem("pants1_1.png", "pants1");
+    showItem("leaf1_1.png", "leaf1"); // Newly added leaf
+}
+
+function showItem(itemId, categoryName) {
+    const selectedItem = document.getElementById(itemId);
+    if (selectedItem) {
+        selectedItem.style.visibility = "visible";
+        selectedItem.style.display = "block";
+        selectedItem.style.position = "absolute";
+        selectedItem.style.left = "0";
+        selectedItem.style.top = "0";
+        selectedItem.style.zIndex = getZIndex(categoryName);
+    } else {
+        console.warn(`Item not found: ${itemId} in category ${categoryName}`);
+    }
+}

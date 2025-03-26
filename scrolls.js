@@ -13,6 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const presets = [
 		
             { name: "Default", action: applyCustomPreset },
+			{ name: "introvert", action: applyIntrovertPreset },
+			{ name: "tennis", action: applyTennisPreset },
+			{ name: "reverse", action: applyReversePreset },
 			{ name: "pajama", action: applypajamasPreset },
             { name: "Student", action: applyPreset1 },
 			{ name: "Beach", action: applyPresetBeach	},
