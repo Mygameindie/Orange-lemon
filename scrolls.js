@@ -50,3 +50,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     generateButtons(); // Load buttons when the page loads
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const scrollContainer = document.querySelector(".scrollable-buttons");
+
+    // Horizontal scroll using mouse wheel on PC
+    scrollContainer.addEventListener("wheel", (evt) => {
+        if (evt.deltaY !== 0) {
+            evt.preventDefault();
+            scrollContainer.scrollLeft += evt.deltaY;
+        }
+    }, { passive: false });
+});
