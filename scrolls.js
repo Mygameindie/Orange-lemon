@@ -11,16 +11,14 @@ document.addEventListener("DOMContentLoaded", () => {
         buttonContainer.appendChild(presetTitle);
 
         const presets = [
-		
             { name: "Default", action: applyCustomPreset },
-			{ name: "introvert", action: applyIntrovertPreset },
-			{ name: "tennis", action: applyTennisPreset },
-			{ name: "reverse", action: applyReversePreset },
-			{ name: "pajama", action: applypajamasPreset },
+            { name: "introvert", action: applyIntrovertPreset },
+            { name: "tennis", action: applyTennisPreset },
+            { name: "reverse", action: applyReversePreset },
+            { name: "pajama", action: applypajamasPreset },
             { name: "Student", action: applyPreset1 },
-			{ name: "Beach", action: applyPresetBeach	},
+            { name: "Beach", action: applyPresetBeach },
             { name: "Remove", action: applyUnderwearOnlyPreset },
-			
         ];
 
         presets.forEach(preset => {
@@ -30,11 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
             presetButton.onclick = preset.action;
             buttonContainer.appendChild(presetButton);
         });
-
-        
-        
-
-        
     }
 
     function toggleItem(itemId) {
@@ -49,9 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     generateButtons(); // Load buttons when the page loads
-});
 
-document.addEventListener("DOMContentLoaded", () => {
     const scrollContainer = document.querySelector(".scrollable-buttons");
 
     // Horizontal scroll using mouse wheel on PC
@@ -61,4 +52,26 @@ document.addEventListener("DOMContentLoaded", () => {
             scrollContainer.scrollLeft += evt.deltaY;
         }
     }, { passive: false });
+
+    // Touch scroll for mobile
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    scrollContainer.addEventListener("touchstart", (e) => {
+        isDown = true;
+        startX = e.touches[0].pageX - scrollContainer.offsetLeft;
+        scrollLeft = scrollContainer.scrollLeft;
+    });
+
+    scrollContainer.addEventListener("touchmove", (e) => {
+        if (!isDown) return;
+        const x = e.touches[0].pageX - scrollContainer.offsetLeft;
+        const walk = (x - startX) * 1.5; // scroll speed multiplier
+        scrollContainer.scrollLeft = scrollLeft - walk;
+    });
+
+    scrollContainer.addEventListener("touchend", () => {
+        isDown = false;
+    });
 });
