@@ -229,8 +229,8 @@ body {
 /* Ensure buttons scale with the base container */
 .small-button {
     position: absolute;
-    width: 3%; /* Adjusted size dynamically */
-    height: 3%;
+    width: 5%; /* Adjusted size dynamically */
+    height: 5%;
     background: transparent;
     border: none;
     cursor: pointer;
@@ -241,12 +241,12 @@ body {
 /* Button Positions (Relative to Base Container) */
 .button-1 {
     top: 80%; /* Adjusted using percentage */
-    left: 30%;
+    left: 31.5%;
 }
 
 .button-2 {
     top: 80%;
-    left: 70%;
+    left: 71.5%;
 }
 
 /* Responsive Scaling */
