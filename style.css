@@ -261,3 +261,122 @@ body {
         height: 4%;
     }
 }
+/* Color Picker Styles */
+.color-picker-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border: 2px solid #333;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    max-width: 300px;
+}
+
+.color-picker-container h4 {
+    margin-top: 0;
+    text-align: center;
+    color: #333;
+}
+
+.color-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.color-button {
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    background: #f9f9f9;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 12px;
+}
+
+.color-button:hover {
+    background: #e0e0e0;
+    border-color: #333;
+    transform: scale(1.05);
+}
+
+.color-change-button {
+    background: #ff6b6b;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 5px;
+    transition: all 0.2s ease;
+}
+
+.color-change-button:hover {
+    background: #ff5252;
+    transform: scale(1.1);
+}
+
+.button-container {
+    display: flex;
+    align-items: cente;
+    margin-bottom: 5px;
+}
+
+.close-color-picker {
+    width: 100%;
+    padding: 10px;
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.close-color-picker:hover {
+    background: #555;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+    .color-picker-container {
+        max-width: 90%;
+        padding: 15px;
+    }
+    
+    .color-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .color-change-button {
+        width: 25px;
+        height: 25px;
+        font-size: 14px;
+    }
+}
+.category {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: row;  /* Make buttons side by side */
+    align-items: center;
+    gap: 4px;
+}
+.button-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}

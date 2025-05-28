@@ -15,6 +15,22 @@ const jsonFiles = [
     'hat1.json', 'hat2.json','leaf1.json','leaf2.json'
 ];
 
+// Color palette for clothing items
+const colorPalette = [
+    { name: 'Original', value: 'none' },
+    { name: 'Red', value: 'hue-rotate(0deg)' },
+    { name: 'Blue', value: 'hue-rotate(240deg)' },
+    { name: 'Green', value: 'hue-rotate(120deg)' },
+    { name: 'Purple', value: 'hue-rotate(270deg)' },
+    { name: 'Orange', value: 'hue-rotate(30deg)' },
+    { name: 'Pink', value: 'hue-rotate(320deg)' },
+    { name: 'Yellow', value: 'hue-rotate(60deg)' },
+    { name: 'Cyan', value: 'hue-rotate(180deg)' }
+];
+
+// Track currently selected item for color changing
+let currentlySelectedItem = null;
+
 // Helper function to set z-index for categories
 function getZIndex(categoryName) {
     const zIndexMap = {
@@ -38,10 +54,75 @@ async function loadItemFile(file) {
     }
 }
 
+// Create color picker UI
+function createColorPicker() {
+    const colorPickerContainer = document.createElement('div');
+    colorPickerContainer.classList.add('color-picker-container');
+    colorPickerContainer.style.display = 'none';
+    
+    const colorPickerTitle = document.createElement('h4');
+    colorPickerTitle.textContent = 'Choose Color:';
+    colorPickerContainer.appendChild(colorPickerTitle);
+    
+    const colorGrid = document.createElement('div');
+    colorGrid.classList.add('color-grid');
+    
+    colorPalette.forEach(color => {
+        const colorButton = document.createElement('button');
+        colorButton.classList.add('color-button');
+        colorButton.textContent = color.name;
+        colorButton.onclick = () => applyColorToItem(color.value);
+        colorGrid.appendChild(colorButton);
+    });
+    
+    colorPickerContainer.appendChild(colorGrid);
+    
+    // Close button
+    const closeButton = document.createElement('button');
+    closeButton.textContent = 'Close';
+    closeButton.classList.add('close-color-picker');
+    closeButton.onclick = hideColorPicker;
+    colorPickerContainer.appendChild(closeButton);
+    
+    document.querySelector('.controls').appendChild(colorPickerContainer);
+}
+
+// Show color picker
+function showColorPicker(itemId) {
+    currentlySelectedItem = itemId;
+    const colorPicker = document.querySelector('.color-picker-container');
+    colorPicker.style.display = 'block';
+}
+
+// Hide color picker
+function hideColorPicker() {
+    const colorPicker = document.querySelector('.color-picker-container');
+    colorPicker.style.display = 'none';
+    currentlySelectedItem = null;
+}
+
+// Apply color filter to selected item
+function applyColorToItem(filterValue) {
+    if (!currentlySelectedItem) return;
+    
+    const item = document.getElementById(currentlySelectedItem);
+    if (item) {
+        if (filterValue === 'none') {
+            item.style.filter = '';
+        } else {
+            item.style.filter = filterValue;
+        }
+    }
+    hideColorPicker();
+}
+
 // Load items in batches to reduce load time and improve responsiveness
 async function loadItemsInBatches(batchSize = 3) {
     const baseContainer = document.querySelector('.base-container');
     const controlsContainer = document.querySelector('.controls');
+    
+    // Create color picker first
+    createColorPicker();
     
     for (let i = 0; i < jsonFiles.length; i += batchSize) {
         const batch = jsonFiles.slice(i, i + batchSize);
@@ -70,13 +151,40 @@ async function loadItemsInBatches(batchSize = 3) {
                 img.style.zIndex = getZIndex(categoryName);
                 baseContainer.appendChild(img);
 
-                const button = document.createElement('img');
-                const buttonFile = item.src.replace('.png', 'b.png');
-                button.src = buttonFile;
-                button.alt = item.alt + ' Button';
-                button.classList.add('item-button');
-                button.onclick = () => toggleVisibility(itemId, categoryName);
-                categoryContainer.appendChild(button);
+                // Create container for buttons
+const buttonContainer = document.createElement('div');
+buttonContainer.classList.add('button-container');
+
+// Create a wrapper to stack buttons vertically
+const buttonWrap = document.createElement('div');
+buttonWrap.classList.add('button-wrap');
+
+// Main item button
+const button = document.createElement('img');
+const buttonFile = item.src.replace('.png', 'b.png');
+button.src = buttonFile;
+button.alt = item.alt + ' Button';
+button.classList.add('item-button');
+button.onclick = () => toggleVisibility(itemId, categoryName);
+buttonWrap.appendChild(button);
+
+// Color change button
+const colorButton = document.createElement('button');
+colorButton.textContent = '🎨';
+colorButton.classList.add('color-change-button');
+colorButton.onclick = (e) => {
+    e.stopPropagation();
+    const targetItem = document.getElementById(itemId);
+    if (targetItem.style.visibility === 'hidden') {
+        toggleVisibility(itemId, categoryName);
+    }
+    showColorPicker(itemId);
+};
+buttonWrap.appendChild(colorButton);
+
+// Add stacked buttonWrap to container
+buttonContainer.appendChild(buttonWrap);
+categoryContainer.appendChild(buttonContainer);
             });
 
             controlsContainer.appendChild(categoryContainer);
@@ -109,7 +217,7 @@ function toggleVisibility(itemId, categoryName) {
             hideSpecificCategories(['dress1']);
         } else if (categoryName.startsWith('top2') || categoryName.startsWith('pants2') || categoryName.startsWith('skirt2') || categoryName.startsWith('sweatshirt2')) {
             hideSpecificCategories(['dress2']);
-		}else if (categoryName === 'topunderwear1', 'bottomunderwear1' ) {
+        } else if (categoryName === 'topunderwear1' || categoryName === 'bottomunderwear1') {
             hideSpecificCategories(['onepiece1']);
         }
     }
@@ -154,8 +262,6 @@ window.onload = () => {
 window.addEventListener('resize', adjustCanvasLayout);
 
 // Function to start the game (hide menu, show game)
-
-// Function to start the game (hide menu, show game)
 function enterGame() {
     document.querySelector('.main-menu').style.display = 'none';
     document.querySelector('.game-container').style.display = 'block';
@@ -195,15 +301,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const button2 = document.querySelector(".button-2");
 
     // Button 1 (Base2)
-    button1.addEventListener("mousedown", pressButton1);
-    button1.addEventListener("mouseup", releaseButton1);
-    button1.addEventListener("touchstart", pressButton1, { passive: false });
-    button1.addEventListener("touchend", releaseButton1, { passive: false });
+    if (button1) {
+        button1.addEventListener("mousedown", pressButton1);
+        button1.addEventListener("mouseup", releaseButton1);
+        button1.addEventListener("touchstart", pressButton1, { passive: false });
+        button1.addEventListener("touchend", releaseButton1, { passive: false });
+    }
 
     // Button 2 (Base3)
-    button2.addEventListener("mousedown", pressButton2);
-    button2.addEventListener("mouseup", releaseButton2);
-    button2.addEventListener("touchstart", pressButton2, { passive: false });
-    button2.addEventListener("touchend", releaseButton2, { passive: false });
+    if (button2) {
+        button2.addEventListener("mousedown", pressButton2);
+        button2.addEventListener("mouseup", releaseButton2);
+        button2.addEventListener("touchstart", pressButton2, { passive: false });
+        button2.addEventListener("touchend", releaseButton2, { passive: false });
+    }
 });
-
