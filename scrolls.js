@@ -87,3 +87,42 @@ document.addEventListener("DOMContentLoaded", () => {
         }, { passive: false });
     });
 });
+function enableDragScroll(scrollElement) {
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    scrollElement.addEventListener('mousedown', (e) => {
+        isDown = true;
+        scrollElement.classList.add('dragging');
+        startX = e.pageX - scrollElement.offsetLeft;
+        scrollLeft = scrollElement.scrollLeft;
+    });
+
+    scrollElement.addEventListener('mouseleave', () => {
+        isDown = false;
+        scrollElement.classList.remove('dragging');
+    });
+
+    scrollElement.addEventListener('mouseup', () => {
+        isDown = false;
+        scrollElement.classList.remove('dragging');
+    });
+
+    scrollElement.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - scrollElement.offsetLeft;
+        const walk = (x - startX) * 1.5; // Scroll speed
+        scrollElement.scrollLeft = scrollLeft - walk;
+    });
+}
+
+// Enable drag scrolling on load
+document.addEventListener("DOMContentLoaded", () => {
+    const presetScroll = document.getElementById("presetScrollBar");
+    const categoryScroll = document.getElementById("categoryScrollBar");
+
+    if (presetScroll) enableDragScroll(presetScroll);
+    if (categoryScroll) enableDragScroll(categoryScroll);
+});
