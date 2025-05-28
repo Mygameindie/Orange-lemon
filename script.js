@@ -187,7 +187,7 @@ buttonContainer.appendChild(buttonWrap);
 categoryContainer.appendChild(buttonContainer);
             });
 
-            controlsContainer.appendChild(categoryContainer);
+            //controlsContainer.appendChild(categoryContainer);
         }));
 
         await new Promise(resolve => setTimeout(resolve, 0.1));
@@ -196,6 +196,13 @@ categoryContainer.appendChild(buttonContainer);
 
 // Toggle visibility of item images, ensuring mutual exclusivity
 function toggleVisibility(itemId, categoryName) {
+	// Auto-scroll to the item's category heading
+const allHeadings = document.querySelectorAll('.category h3');
+allHeadings.forEach(heading => {
+    if (heading.textContent.trim() === categoryName.trim()) {
+        heading.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+});
     const categoryItems = document.querySelectorAll(`.${categoryName}`);
     categoryItems.forEach(item => {
         if (item.id !== itemId) {
