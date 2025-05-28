@@ -1,78 +1,89 @@
+
 document.addEventListener("DOMContentLoaded", () => {
+    const presetScrollBar = document.getElementById("presetScrollBar");
+    const categoryScrollBar = document.getElementById("categoryScrollBar");
     const buttonContainer = document.querySelector(".scrollable-buttons");
-    
-    function generateButtons() {
-        buttonContainer.innerHTML = ""; // Clear previous buttons
 
-        // Preset Buttons
-        const presetTitle = document.createElement("h3");
-        presetTitle.textContent = "Presets";
-        presetTitle.style.margin = "10px 0";
-        buttonContainer.appendChild(presetTitle);
+    const presets = [
+        { name: "Default", action: applyCustomPreset },
+        { name: "Default no shirt", action: applyCustomPreset2 },
+        { name: "introvert", action: applyIntrovertPreset },
+        { name: "tennis", action: applyTennisPreset },
+        { name: "reverse", action: applyReversePreset },
+        { name: "pajama", action: applypajamasPreset },
+        { name: "Student", action: applyPreset1 },
+        { name: "Beach", action: applyPresetBeach },
+        { name: "Remove", action: applyUnderwearOnlyPreset },
+    ];
 
-        const presets = [
-            { name: "Default", action: applyCustomPreset },
-			{ name: "Default no shirt", action: applyCustomPreset2 },
-            { name: "introvert", action: applyIntrovertPreset },
-            { name: "tennis", action: applyTennisPreset },
-            { name: "reverse", action: applyReversePreset },
-            { name: "pajama", action: applypajamasPreset },
-            { name: "Student", action: applyPreset1 },
-            { name: "Beach", action: applyPresetBeach },
-            { name: "Remove", action: applyUnderwearOnlyPreset },
-        ];
+    const categories = [
+        'top1', 'top2', 'pants1', 'pants2', 'skirt1', 'skirt2',
+        'shoes1', 'shoes2', 'jacket1', 'jacket2', 'socks1', 'socks2',
+        'hat1', 'hat2', 'dress1', 'dress2', 'sweatshirt1', 'sweatshirt2',
+        'topunderwear1', 'bottomunderwear1', 'boxers1', 'boxers2',
+        'onepiece1', 'leaf1', 'leaf2'
+    ];
 
+    function generatePresetButtons() {
+        presetScrollBar.innerHTML = "";
         presets.forEach(preset => {
             const presetButton = document.createElement("button");
             presetButton.textContent = preset.name;
             presetButton.classList.add("preset-button");
             presetButton.onclick = preset.action;
-            buttonContainer.appendChild(presetButton);
+            presetScrollBar.appendChild(presetButton);
         });
     }
 
-    function toggleItem(itemId) {
-        const selectedItem = document.getElementById(itemId);
-
-        if (selectedItem) {
-            selectedItem.style.visibility = 
-                selectedItem.style.visibility === "visible" ? "hidden" : "visible";
-        } else {
-            console.warn(`Item not found: ${itemId}`);
-        }
+    function generateCategoryButtons() {
+        categoryScrollBar.innerHTML = "";
+        categories.forEach(cat => {
+            const tab = document.createElement("button");
+            tab.textContent = cat;
+            tab.classList.add("preset-button");
+            tab.onclick = () => showCategoryButtons(cat);
+            categoryScrollBar.appendChild(tab);
+        });
     }
 
-    generateButtons(); // Load buttons when the page loads
+    function showCategoryButtons(categoryName) {
+        buttonContainer.innerHTML = "";
 
-    const scrollContainer = document.querySelector(".scrollable-buttons");
+        const items = document.querySelectorAll(`img.${categoryName}`);
+        items.forEach(item => {
+            const buttonWrap = document.createElement('div');
+            buttonWrap.classList.add('button-wrap');
 
-    // Horizontal scroll using mouse wheel on PC
-    scrollContainer.addEventListener("wheel", (evt) => {
-        if (evt.deltaY !== 0) {
-            evt.preventDefault();
-            scrollContainer.scrollLeft += evt.deltaY;
-        }
-    }, { passive: false });
+            const button = document.createElement("img");
+            button.src = item.src.replace(".png", "b.png");
+            button.classList.add("item-button");
+            button.onclick = () => toggleVisibility(item.id, categoryName);
+            buttonWrap.appendChild(button);
 
-    // Touch scroll for mobile
-    let isDown = false;
-    let startX;
-    let scrollLeft;
+            const colorButton = document.createElement("button");
+            colorButton.textContent = "🎨";
+            colorButton.classList.add("color-change-button");
+            colorButton.onclick = (e) => {
+                e.stopPropagation();
+                if (item.style.visibility === "hidden") toggleVisibility(item.id, categoryName);
+                showColorPicker(item.id);
+            };
+            buttonWrap.appendChild(colorButton);
 
-    scrollContainer.addEventListener("touchstart", (e) => {
-        isDown = true;
-        startX = e.touches[0].pageX - scrollContainer.offsetLeft;
-        scrollLeft = scrollContainer.scrollLeft;
-    });
+            buttonContainer.appendChild(buttonWrap);
+        });
+    }
 
-    scrollContainer.addEventListener("touchmove", (e) => {
-        if (!isDown) return;
-        const x = e.touches[0].pageX - scrollContainer.offsetLeft;
-        const walk = (x - startX) * 1.5; // scroll speed multiplier
-        scrollContainer.scrollLeft = scrollLeft - walk;
-    });
+    generatePresetButtons();
+    generateCategoryButtons();
 
-    scrollContainer.addEventListener("touchend", () => {
-        isDown = false;
+    // Scroll behavior for each bar
+    [presetScrollBar, categoryScrollBar].forEach(scrollEl => {
+        scrollEl.addEventListener("wheel", (evt) => {
+            if (evt.deltaY !== 0) {
+                evt.preventDefault();
+                scrollEl.scrollLeft += evt.deltaY;
+            }
+        }, { passive: false });
     });
 });

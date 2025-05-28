@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Dress-Up Game</title>
     <link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="three_scroll_bar_style.css">
     <link rel="stylesheet" href="scroll.css"> <!-- Link to the new CSS -->
 </head>
 <body>
@@ -25,11 +26,11 @@
         </div>
 
 
-        <!-- Scrollable Buttons for Categories -->
-        <div class="controls">
-            <div class="scrollable-buttons">
-                <!-- Buttons will be generated dynamically from scrolls.js -->
-            </div>
+<div class="controls">
+  <div class="combined-scroll-bar" id="presetScrollBar"></div> <!-- 1. Presets -->
+  <div class="combined-scroll-bar" id="categoryScrollBar"></div> <!-- 2. Categories -->
+  <div class="scrollable-buttons"></div> <!-- 3. Items for selected category -->
+</div>
         </div>
     </div>
 
